@@ -1,26 +1,32 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import './App.css';
-import Navbar from './components/layout/Navbar';
-import Index from "./components/layout/Index";
- import Lyrics from "./components/tracks/Lyric";
-import { Provider } from "./context";
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-function App() {
-  return (
-    <Provider>
-    <Router>
-      <>
-        <Navbar />
-        <div className="container">
-            <Routes>
-              <Route exact path="/" element={<Index />} />
-             <Route exact path="/lyrics" element={<Lyrics/>} />
-            </Routes>
-          </div>
-      </>
-    </Router>
-   </Provider>
-  );
+import Navbar from './components/layout/Navbar';
+import Index from './components/layout/Index';
+import Lyrics from './components/tracks/Lyrics';
+
+import './App.css';
+
+import { Provider } from './context';
+
+class App extends Component {
+  render() {
+    return (
+      <Provider>
+        <Router>
+          <React.Fragment>
+            <Navbar />
+            <div className="container">
+              <Switch>
+                <Route exact path="/" component={Index} />
+                <Route exact path="/lyrics/track/:id" component={Lyrics} />
+              </Switch>
+            </div>
+          </React.Fragment>
+        </Router>
+      </Provider>
+    );
+  }
 }
 
 export default App;
