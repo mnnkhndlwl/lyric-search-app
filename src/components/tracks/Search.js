@@ -25,7 +25,7 @@ class Search extends Component {
                     type: 'SEARCH_TRACKS',
                     payload: res.data.message.body.track_list
                   });
-                  this.setState({ trackTitle: '' });
+                  this.setState({ trackTitle: '' }); // will clear search bar after searching
             })
             .catch(err => console.log(err));
     }
