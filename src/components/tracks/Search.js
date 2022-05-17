@@ -2,25 +2,64 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import { Consumer } from '../../context';
 
- class Search extends Component {
+class Search extends Component {
 
     state = {
-        trackTitle:''
+        trackTitle: ''
     }
 
-  render() {
-    return (
-      
-      <Consumer>
-            {value => {
-                return (
-                    
-                );
-            }}
-      </Consumer>
-    
-    )
-  }
+    onChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value }); 
+    }
+
+    findTrack = (e) => {
+        e.preventDefaults;
+        axios
+            .get(
+                `https://cors-anywhere.herokuapp.com/http://api.musixmatch.com/ws/1.1/track.search?q_track=${trackTitle}&page_size=10&page=1&s_track_rating=desc&apikey=${process.env.REACT_APP_API
+                }`
+            )
+            .then(res => {
+                let track_list = res.data.message.body.track_list;
+                setState({ track_list: track_list, heading: "Search Results" });
+            })
+            .catch(err => console.log(err));
+    }
+
+    render() {
+        return (
+
+            <Consumer>
+                {value => {
+                    return (
+                        <div className="card card-body mb-4 p-4">
+                            <h1 className="display-4 text-center">
+                                <i className="fas fa-music"></i> Search for a song
+                            </h1>
+                            <p className="lead text-center">
+                                Get the lyrics for any song
+                            </p>
+                            <form onSubmit={this.formTrack}>
+                                <div className="form-group">
+                                    <input type="text"
+                                        className="form-control form-control-lg"
+                                        placeholder='Song title ....'
+                                        name='trackTitle'
+                                        value={this.state.trackTitle}
+                                        onChange={this.onChange} // !important bind property
+                                    />
+                                </div>
+                                <button className="btn btn-primary btn-md btn-block mb-5" type="submit">
+                                    Get Track Lyrics
+                                </button>
+                            </form>
+                        </div>
+                    );
+                }}
+            </Consumer>
+
+        )
+    }
 }
 
 export default Search;
